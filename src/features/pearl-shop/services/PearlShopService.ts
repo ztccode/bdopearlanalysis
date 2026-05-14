@@ -37,23 +37,10 @@ export class PearlShopService {
    */
   async getLatestPromotion(): Promise<ApiResponse<PearlShopPromotion>> {
     try {
-      // TODO: Integrar com API real
-      // const response = await fetch('/api/trpc/pearlShop.getLatest');
-      // return response.json();
-
-      // Mock para desenvolvimento
-      await delay(500);
+      await delay(200);
       return {
         success: true,
-        data: {
-          id: 'promo-001',
-          title: 'Promoção Especial - Loja de Pérolas',
-          description: 'Promoção com itens especiais e descontos exclusivos',
-          startDate: new Date(),
-          endDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-          items: [],
-          isActive: true,
-        },
+        data: MOCK_PROMOTION,
         timestamp: new Date(),
       };
     } catch (error) {
