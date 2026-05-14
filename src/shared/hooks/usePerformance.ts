@@ -22,7 +22,7 @@ export function usePerformance(onMetrics?: (vitals: WebVitals) => void) {
         const lcpObserver = new PerformanceObserver((entryList) => {
           const entries = entryList.getEntries();
           const lastEntry = entries[entries.length - 1];
-          vitals.lcp = lastEntry.renderTime || lastEntry.loadTime;
+          vitals.lcp = (lastEntry as any).renderTime || (lastEntry as any).loadTime;
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
 
@@ -30,7 +30,7 @@ export function usePerformance(onMetrics?: (vitals: WebVitals) => void) {
         const fidObserver = new PerformanceObserver((entryList) => {
           const entries = entryList.getEntries();
           if (entries.length > 0) {
-            vitals.fid = entries[0].processingDuration;
+            vitals.fid = (entries[0] as any).processingDuration;
           }
         });
         fidObserver.observe({ entryTypes: ['first-input'] });
