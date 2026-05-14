@@ -15,6 +15,7 @@ import type {
 } from '@/core/types';
 import { calculateROI, removeDuplicates, sortBy, delay } from '@/core/utils';
 import { SCRAPING_CONFIG } from '@/core/constants';
+import { MOCK_PROMOTION } from '@/mocks/pearl-shop';
 
 export class PearlShopService {
   private static instance: PearlShopService;
