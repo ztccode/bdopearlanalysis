@@ -26,7 +26,7 @@ export function usePearlShopData(): UsePearlShopDataReturn {
     retryCount: 0,
   });
   const [error, setError] = useState<Error | null>(null);
-  const cacheTimerRef = useRef<NodeJS.Timeout>();
+  const cacheTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   /**
    * Carrega dados da Loja de Pérolas

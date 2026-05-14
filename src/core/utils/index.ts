@@ -261,8 +261,8 @@ export function groupBy<T>(arr: T[], key: (item: T) => string): Record<string, T
  */
 export function sortBy<T>(arr: T[], key: (item: T) => unknown, order: 'asc' | 'desc' = 'asc'): T[] {
   return [...arr].sort((a, b) => {
-    const aVal = key(a);
-    const bVal = key(b);
+    const aVal = key(a) as any;
+    const bVal = key(b) as any;
 
     if (aVal < bVal) return order === 'asc' ? -1 : 1;
     if (aVal > bVal) return order === 'asc' ? 1 : -1;

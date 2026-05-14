@@ -52,7 +52,7 @@ export class AnalysisService {
   /**
    * Gera plano otimizado de compra
    */
-  private generateOptimalPlan(items: PearlShopItem[], budget: number): OptimalPurchasePlan[] {
+  public generateOptimalPlan(items: PearlShopItem[], budget: number): OptimalPurchasePlan[] {
     // Ordenar itens por ROI (melhor primeiro)
     const sortedItems = [...items].sort((a, b) => {
       const roiOrder = { Absurdo: 5, Extremo: 4, Alto: 3, Médio: 2, Baixo: 1 };
