@@ -13,6 +13,14 @@ export function PDFExporter({ character, optimalPlan }: PDFExporterProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const escapeHtml = (str: unknown): string =>
+    String(str ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
   const generatePDF = async () => {
     try {
       setLoading(true);
@@ -24,7 +32,7 @@ export function PDFExporter({ character, optimalPlan }: PDFExporterProps) {
         <html>
         <head>
           <meta charset="UTF-8">
-          <title>BDO Pearl Shop Strategy - ${character?.name || "Análise"}</title>
+          <title>BDO Pearl Shop Strategy - ${escapeHtml(character?.name || "Análise")}</title>
           <style>
             * {
               margin: 0;
@@ -145,7 +153,7 @@ export function PDFExporter({ character, optimalPlan }: PDFExporterProps) {
             <div class="header">
               <h1>🎯 BDO Pearl Shop Analysis</h1>
               <p>Estratégia Otimizada de Compra - Promoção 14/05 a 04/06/2026</p>
-              ${character ? `<p>Personagem: <strong>${character.name}</strong> | GS: <strong>${character.gs}</strong></p>` : ""}
+              ${character ? `<p>Personagem: <strong>${escapeHtml(character.name)}</strong> | GS: <strong>${escapeHtml(character.gs)}</strong></p>` : ""}
             </div>
 
             <!-- Estatísticas Principais -->
@@ -263,7 +271,8 @@ export function PDFExporter({ character, optimalPlan }: PDFExporterProps) {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `BDO-Pearl-Strategy-${character?.name || "Analysis"}-${new Date().toISOString().split("T")[0]}.html`;
+      const safeName = (character?.name || "Analysis").replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 64);
+      link.download = `BDO-Pearl-Strategy-${safeName}-${new Date().toISOString().split("T")[0]}.html`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
