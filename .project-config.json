@@ -1,0 +1,42 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [
+    "db",
+    "server",
+    "user"
+  ],
+  "dev_command": "pnpm run dev",
+  "env_vars": {
+    "DATABASE_URL": "mysql://3mqMxew2Kt4Ghn1.8d9b15b8dd02:4yPdCW0vVM2WA8ify22R@gateway03.us-east-1.prod.aws.tidbcloud.com:4000/5QvDD8Fi3eM5CiLkMzruAn?ssl={\"rejectUnauthorized\":true}",
+    "DRIZZLE_DATABASE_URL": "mysql://3mqMxew2Kt4Ghn1.8d9b15b8dd02:4yPdCW0vVM2WA8ify22R@gateway03.us-east-1.prod.aws.tidbcloud.com:4000/5QvDD8Fi3eM5CiLkMzruAn?ssl={\"rejectUnauthorized\":true}"
+  },
+  "experiments": null,
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310419663030063018/5QvDD8Fi3eM5CiLkMzruAn",
+    "access_key_id": "ASIAZV3A2ECZPLZ7H6QT",
+    "secret_access_key": "vVsHhxC8cvtgOf4kdYJ/TJ92Gr/8EGvnFte5+P7Q",
+    "session_token": "IQoJb3JpZ2luX2VjEJb//////////wEaCXVzLWVhc3QtMSJHMEUCIAIm6+0F3fMNL0tWc7OEHeL93uYh71xQ1ZcUHoWAkXDvAiEA/8MBzzTGe3NiAIvPxevXSYUKdxhu17EbnoLbdhSkxDAq9QMIXhAEGgw2NjUzODYwOTg4NjYiDGOahar1wx8Nz83cWCrSA8O7UOstTgntQrpZNO6NBLqrKyDEaXNpuw8Foqv2oJTZ3ZYYnO3viRQluZZmtz/0drUhz8CoB7cJHUkRbx1MVCO4rL+KReyNXH2dvpbpffnRLURzqEJqsaal8AoZFetLr7EU/KeQflPINA/zNdM/WtctX7L9u/etyVnGZevuquzwz/IdmrReDgIiVHFzeuliiU2NnXJ18L1YZtgrJwOhMAC0nTw8h3YeGSII9Zaprp0JYR7AooXvAAMEIkFzwNIUE1MqSQ+ynY0nb57IXPNb1uheCOz8XNjgM13lF9bjv4jUBPr4stAe4+PYdNO2+wBTFDN4rEbrlNORfW5xBfd0uBMi9UuFWsKJnATc7MFAy79g3JtUj2iHJQ3JW5eijQmVGVhkS7gGuvFQQgaWtXjxflqe7xZhW2rWwr2tpZkkGJN8i2G3irQwVhzXa7jDKkt3xELZVSXsI5HJ/W7uqrH266Vjp8LKwEWeFozvJ/ZuQAufk34M5/twvoiwDoV7umP/n8AbuOsEOF6ACTFHL/qJwoixPjn3stdQrLGCTxqalHJQIZNz0vr4sE3Wl/JP0k9hDi76yZ+d/Hmqnv9qzN+GKMzPoPMcrP7eva2OuX0GGzWeNUwwh5eX0AY6nQHJc32lXEEyFGc9UeVeluA6PL+LzEah5GnoIa+7TvDX4D9YXyQrSlUQYTk6koF7/mOA9jbYy+xkr5t49yKS77qrlcxN50sTevB/u02Vq/DbEesX4lseCJi6tfZ9tzdwr3kCqtQCe2YLlcl/3Plb+lDC47AXp4UgF4D3mHNKfGq1TD5vuCmJCZAsuQfRthX291IA34NJW9N4wD5IHNaJ",
+    "expiration": "2026-05-15T01:17:59.000Z"
+  },
+  "name": "bdo-pearl-shop-analysis",
+  "path": "/home/ubuntu/bdo-pearl-shop-analysis",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "LpPy2Jez96MPJxe5b8mJdU",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "J2zt8dxmj6bJi9r6fReofc",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Tiago Soares (ztccode)",
+    "OWNER_OPEN_ID": "Ex6xRKwfWEQFgZFQh8jWnU",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "0eed6c23-1b30-4f4e-8290-6d322aead053",
+    "VITE_APP_ID": "5QvDD8Fi3eM5CiLkMzruAn",
+    "VITE_APP_LOGO": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310419663030063018/kQtILOVaslmSaQCj.png",
+    "VITE_APP_TITLE": "BDO Pearl Shop Analysis - GS 775+ Endgame Strategy",
+    "VITE_FRONTEND_FORGE_API_KEY": "5FAT7ngDadGEmBnXqhMexh",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-static",
+  "test_command": "pnpm test"
+}
