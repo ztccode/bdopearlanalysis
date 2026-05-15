@@ -1,81 +1,61 @@
+# AI Pearl Shop Advisor
 
-# Importar BDO Pearl Shop — só frontend, dados mockados
+Add an AI-powered recommendation panel on the Home page that takes the user's budget (in Pérolas) and optional goals, then asks Lovable AI to pick the best items from the mock catalog and explain why.
 
-## O que entra
+## UX
 
-Páginas e componentes do `client/src` do projeto enviado, adaptados ao stack atual (TanStack Start + Tailwind v4 + shadcn). Backend (Express/tRPC/Drizzle), scraping (Playwright) e cron ficam **de fora**.
+- New section on `/` (above the existing "Plano Ótimo" tab, or as a new tab "AI Advisor")
+- Inputs:
+  - Budget (number, Pérolas) — default 10000
+  - Goal (select): "Refinamento endgame" | "XP / Leveling" | "Loot / Farming" | "Custo-benefício geral"
+  - Optional free-text note (e.g. "GS 760, foco em PEN boss")
+- Button: "Gerar recomendação"
+- Output card:
+  - Streamed AI text (Markdown) with reasoning
+  - Structured list of recommended items (name, qty, total cost, why) rendered as cards using existing tokens
+  - Total spend vs budget bar
 
-### Páginas portadas
-- `/` — Home (Pearl Shop: header, banner de promoção, abas Ranking/Plano Ótimo/Detalhes, calculadora ROI, FAQ, news, CTA)
-- `/personalize` — Importação de personagem (Garmoth) + análise personalizada (sem chamada real à API; mock local)
-- ~~`/admin`~~ — **excluído** (depende inteiro de tRPC: scraping, snapshots, automação)
-- `/404` — NotFound
+## Technical
 
-### Componentes portados
-Todos os componentes de feature relevantes:
-- `features/pearl-shop/*` (PearlShopHeader, PromotionBanner, ROIRanking, OptimalPlanSection, ROICalculatorSection, FAQAccordion, PearlShopNews)
-- `components/CharacterImporter`, `PersonalizedAnalysis`, `ROICalculator`, `ROICharts`, `FAQSection`, `PDFExporter`, `ErrorBoundary`
-- Componentes shadcn UI faltantes (a maioria já existe no template; adiciono os que faltam)
-- `core/types`, `core/constants`, `core/utils`, `shared/providers/PearlShopProvider`, `NotificationProvider`, `CacheProvider`
+**Server function** `src/lib/ai-advisor.functions.ts`
+- `recommendPearlItems({ budget, goal, note })` via `createServerFn`
+- Reads `process.env.LOVABLE_API_KEY` inside `.handler()`
+- Calls `https://ai.gateway.lovable.dev/v1/chat/completions`
+- Model: `google/gemini-3-flash-preview`
+- Passes `MOCK_PEARL_SHOP_ITEMS` (imported from `src/mocks/pearl-shop.ts`) into the system prompt as JSON so the model only picks from real items
+- Uses **tool calling** for structured output:
+  ```
+  recommend_items({
+    summary: string,           // markdown rationale
+    picks: [{ id, name, quantity, totalPrice, reason }],
+    totalSpend: number,
+    leftover: number
+  })
+  ```
+- Handles 429 / 402 → returns `{ error: 'rate_limited' | 'payment_required' }`
+- Non-streaming (simpler; structured tool call). Streaming can come later if desired.
 
-### Dados mockados
-- Crio `src/mocks/pearl-shop.ts` com um snapshot estático de promoção (estrutura igual à de `PearlShopService`), e o `PearlShopProvider` passa a servir esses dados em vez de chamar o backend.
-- `useHistoricalComparison`, `useHistoricalData` → retornam arrays vazios/estáticos.
-- `CharacterImporter` (Garmoth) → função `importCharacter` retorna um personagem fake (AP/DP/GS) após pequeno delay; sem fetch externo.
+**Client component** `src/features/pearl-shop/components/AIAdvisor.tsx`
+- Form (budget, goal, note) using existing `Input`, `Select`, `Button`, `Card`
+- `useMutation` calling the server fn via `useServerFn`
+- Renders summary with simple Markdown (or plain whitespace-pre-wrap for v1)
+- Renders picks as a list with quantity, total, reason
+- Toast notifications on rate limit / payment errors via `useNotificationContext`
 
-### O que é descartado
-- Tudo em `server/`, `shared/` (do zip), `drizzle/`, `patches/`
-- `lib/trpc.ts` e qualquer hook que use `trpc.*` (admin, scraping, automation, history, auth)
-- Playwright, cron, snapshots, logger server-side
+**Wiring**
+- Add `<AIAdvisor />` section on `src/routes/index.tsx` between the "ROI em Tempo Real" cards and the Tabs, OR as a new `<TabsTrigger value="ai">` tab — I'll go with a new tab "🤖 IA Advisor" to keep the page tidy.
+- Verify `attachSupabaseAuth` middleware is registered in `src/start.ts` (no auth needed here, but check).
+- The serverFn is **public** (no `requireSupabaseAuth`) — anyone can call it. Acceptable since it only reads mock data.
 
-## Adaptações técnicas
+## Files
 
-| Original | Vira |
-|---|---|
-| `wouter` (`Route`, `Switch`, `useLocation`) | `@tanstack/react-router` (`createFileRoute`, `Link`, `useNavigate`) |
-| `client/src/App.tsx` (providers) | Providers movidos para `RootComponent` em `src/routes/__root.tsx` |
-| `client/src/main.tsx` | Não usado (TanStack Start já tem entry) |
-| `client/src/index.css` (tema dark + tokens) | Tokens portados para `src/styles.css` (oklch), tema dark por padrão |
-| `next-themes` ThemeProvider | Mantido (já compatível) ou simplificado para classe `dark` no `<html>` |
-| `tailwindcss-animate` | Já temos `tw-animate-css` no template |
-| Imports `@/...` | Mantidos (alias já configurado) |
-| Hooks/components que importam `trpc` | Removidos do bundle |
+- create `src/lib/ai-advisor.functions.ts`
+- create `src/features/pearl-shop/components/AIAdvisor.tsx`
+- edit `src/routes/index.tsx` — add new tab + render component
 
-## Estrutura final
+## Out of scope
 
-```text
-src/
-  routes/
-    __root.tsx           (providers + Toaster + dark theme)
-    index.tsx            (Home)
-    personalize.tsx
-    404 já tratado pelo notFoundComponent
-  components/            (CharacterImporter, ROICalculator, etc.)
-  components/ui/         (shadcn — adiciono os que faltarem)
-  features/pearl-shop/   (componentes + hooks adaptados)
-  shared/providers/      (PearlShop, Notification, Cache)
-  core/                  (types, constants, utils, design-system)
-  mocks/pearl-shop.ts    (dados estáticos)
-  styles.css             (tokens BDO)
-```
-
-## Passos de execução
-
-1. Copiar `core/`, `features/pearl-shop/`, `shared/providers/`, `components/` (UI+feature), `contexts/ThemeContext.tsx` do zip para `src/`.
-2. Instalar deps faltantes: `wouter` (não — substituído), `framer-motion`, `recharts`, `next-themes`, `nanoid`, `embla-carousel-react`, `react-day-picker`, `vaul`, `cmdk`, `input-otp`, `react-resizable-panels`, `@hookform/resolvers`, `streamdown`, `@tailwindcss/typography` (verifico o que já está e adiciono o resto).
-3. Migrar tokens de tema do `index.css` antigo para `src/styles.css` (converter HSL → oklch onde necessário; manter visual dark da Pearl Shop).
-4. Criar `src/mocks/pearl-shop.ts` e refatorar `PearlShopProvider` + serviços para consumirem o mock (sem `fetch`/`trpc`).
-5. Substituir `wouter` por TanStack Router em todos os componentes (`useNavigate` em vez de `useLocation`, `<Link to=...>`).
-6. Remover/stubar imports de `trpc` em `useHistoricalData`, `useScraping`, `useAutomation`, `useAuth` (ou apagar os arquivos não usados pela Home/Personalize).
-7. Criar `src/routes/index.tsx` (Home) e `src/routes/personalize.tsx`; mover providers para `__root.tsx`.
-8. Adicionar `head()` por rota com title/description/og em PT-BR.
-9. Verificar build (lint/typecheck) e ajustar imports/tipos quebrados.
-
-## Riscos / observações
-
-- O projeto original tem ~5k linhas; vou priorizar Home + Personalize funcionais. Se algum componente arrastar dependência pesada de tRPC, ele é simplificado ou removido.
-- `PDFExporter` pode depender de libs Node — se for o caso, adapto para lib browser ou removo.
-- Tema dark agressivo (estilo BDO) será mantido como default; sem tela de login.
-- Sem persistência: cada reload reinicia.
-
-Confirma que posso prosseguir? Se quiser que eu **inclua o Admin** (com botões/UI fakes em vez de tRPC) ou **exclua a página Personalize**, me diz antes.
+- Persisting recommendations
+- Streaming UI (can add later)
+- Auth / rate limiting per user
+- Editing the existing rule-based `OptimalPlanSection` (kept side by side as deterministic baseline)
