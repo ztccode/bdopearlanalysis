@@ -13,6 +13,7 @@ import { OptimalPlanSection } from "@/features/pearl-shop/components/OptimalPlan
 import { ROICalculatorSection } from "@/features/pearl-shop/components/ROICalculatorSection";
 import { FAQAccordion } from "@/features/pearl-shop/components/FAQAccordion";
 import { PearlShopNews } from "@/features/pearl-shop/components/PearlShopNews";
+import { AIAdvisor } from "@/features/pearl-shop/components/AIAdvisor";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -111,12 +112,20 @@ function HomePage() {
           </div>
         </section>
 
-        <Tabs defaultValue="ranking" className="mb-12">
-          <TabsList className="grid w-full grid-cols-3">
+        <Tabs defaultValue="ai" className="mb-12">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="ai">
+              <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+              IA Advisor
+            </TabsTrigger>
             <TabsTrigger value="ranking">Ranking ROI</TabsTrigger>
             <TabsTrigger value="optimal">Plano Ótimo</TabsTrigger>
             <TabsTrigger value="details">Análise Detalhada</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="ai" className="space-y-4">
+            <AIAdvisor />
+          </TabsContent>
 
           <TabsContent value="ranking" className="space-y-4">
             {loading.isLoading ? (
