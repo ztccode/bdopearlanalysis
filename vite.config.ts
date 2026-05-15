@@ -7,7 +7,6 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [
     tanstackStart({
-      target: "cloudflare-module",
       customViteReactPlugin: true,
     }),
     react(),
