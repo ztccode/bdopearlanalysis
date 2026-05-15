@@ -271,7 +271,8 @@ export function PDFExporter({ character, optimalPlan }: PDFExporterProps) {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `BDO-Pearl-Strategy-${character?.name || "Analysis"}-${new Date().toISOString().split("T")[0]}.html`;
+      const safeName = (character?.name || "Analysis").replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 64);
+      link.download = `BDO-Pearl-Strategy-${safeName}-${new Date().toISOString().split("T")[0]}.html`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
