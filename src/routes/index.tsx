@@ -112,7 +112,7 @@ function HomePage() {
           </div>
         </section>
 
-        <Tabs defaultValue="ranking" className="mb-12">
+        <Tabs defaultValue="ai" className="mb-12">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="ai">
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
