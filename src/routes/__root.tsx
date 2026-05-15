@@ -87,6 +87,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              name: "BDO Pearl Shop Analysis",
+              url: "https://bdopearlanalysis.lovable.app",
+            },
+            {
+              "@type": "WebSite",
+              name: "BDO Pearl Shop Analysis",
+              url: "https://bdopearlanalysis.lovable.app",
+            },
+          ],
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
