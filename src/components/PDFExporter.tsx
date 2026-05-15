@@ -13,6 +13,14 @@ export function PDFExporter({ character, optimalPlan }: PDFExporterProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const escapeHtml = (str: unknown): string =>
+    String(str ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
   const generatePDF = async () => {
     try {
       setLoading(true);
