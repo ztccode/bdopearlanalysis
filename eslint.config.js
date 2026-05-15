@@ -1,40 +1,83 @@
-import js from "@eslint/js";
-import eslintPluginPrettier from "eslint-plugin-prettier/recommended";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
+import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import prettierConfig from 'eslint-config-prettier';
 
-export default tseslint.config(
-  { ignores: ["dist", ".output", ".vinxi"] },
+export default [
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ["**/*.{ts,tsx}"],
+    ignores: ['dist', 'node_modules', '.vite', 'coverage', 'build'],
+  },
+  js.configs.recommended,
+  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+      },
     },
     plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      "no-restricted-imports": [
-        "error",
+      ...reactPlugin.configs.recommended.rules,
+      ...reactHooksPlugin.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      '@typescript-eslint/explicit-function-return-types': [
+        'warn',
         {
-          paths: [
-            {
-              name: "server-only",
-              message:
-                "TanStack Start does not use the Next.js `server-only` package. Rename the module to `*.server.ts` or mark it with `@tanstack/react-start/server-only`.",
-            },
-          ],
+          allowExpressions: true,
+          allowTypedFunctionExpressions: true,
         },
       ],
-      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-      "@typescript-eslint/no-unused-vars": "off",
+      '@typescript-eslint/explicit-module-boundary-types': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
+      '@typescript-eslint/strict-boolean-expressions': [
+        'error',
+        {
+          allowString: false,
+          allowNumber: false,
+          allowNullableObject: false,
+        },
+      ],
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
-  eslintPluginPrettier,
-);
+  {
+    files: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    languageOptions: {
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        vi: 'readonly',
+      },
+    },
+  },
+  prettierConfig,
+];

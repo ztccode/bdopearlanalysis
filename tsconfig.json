@@ -1,23 +1,75 @@
 {
-  "include": ["src/**/*", "src/**/*.tsx", "vite.config.ts"],
-  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
   "compilerOptions": {
-    "incremental": true,
-    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
-    "noEmit": true,
-    "target": "ES2022",
+    /* Language and Environment */
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    
+    /* Module Resolution */
     "module": "ESNext",
-    "strict": true,
-    "lib": ["esnext", "dom", "dom.iterable"],
-    "jsx": "preserve",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "allowImportingTsExtensions": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": ["node", "vite/client"],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    
+    /* Path Mapping */
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+      "@/*": ["src/*"],
+      "@core/*": ["src/core/*"],
+      "@core/types/*": ["src/core/types/*"],
+      "@core/constants/*": ["src/core/constants/*"],
+      "@core/utils/*": ["src/core/utils/*"],
+      "@core/cache/*": ["src/core/cache/*"],
+      "@core/security/*": ["src/core/security/*"],
+      "@core/logging/*": ["src/core/logging/*"],
+      "@features/*": ["src/features/*"],
+      "@shared/*": ["src/shared/*"],
+      "@shared/components/*": ["src/shared/components/*"],
+      "@shared/hooks/*": ["src/shared/hooks/*"],
+      "@shared/providers/*": ["src/shared/providers/*"],
+      "@server/*": ["src/server/*"],
+      "@server/db/*": ["src/server/db/*"],
+      "@server/routers/*": ["src/server/routers/*"],
+      "@server/procedures/*": ["src/server/procedures/*"]
+    },
+    
+    /* Emit */
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": false,
+    "newLine": "lf",
+    
+    /* Interop Constraints */
+    "allowJs": false,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    
+    /* Type Checking */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noUncheckedRuntimeErrors": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "useDefineForClassFields": true,
+    "useUnknownInCatchVariables": true,
+    
+    /* Skip Type Checking */
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".vite",
+    "coverage",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
 }
