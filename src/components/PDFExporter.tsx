@@ -32,7 +32,7 @@ export function PDFExporter({ character, optimalPlan }: PDFExporterProps) {
         <html>
         <head>
           <meta charset="UTF-8">
-          <title>BDO Pearl Shop Strategy - ${character?.name || "Análise"}</title>
+          <title>BDO Pearl Shop Strategy - ${escapeHtml(character?.name || "Análise")}</title>
           <style>
             * {
               margin: 0;
