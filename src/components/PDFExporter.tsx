@@ -153,7 +153,7 @@ export function PDFExporter({ character, optimalPlan }: PDFExporterProps) {
             <div class="header">
               <h1>🎯 BDO Pearl Shop Analysis</h1>
               <p>Estratégia Otimizada de Compra - Promoção 14/05 a 04/06/2026</p>
-              ${character ? `<p>Personagem: <strong>${character.name}</strong> | GS: <strong>${character.gs}</strong></p>` : ""}
+              ${character ? `<p>Personagem: <strong>${escapeHtml(character.name)}</strong> | GS: <strong>${escapeHtml(character.gs)}</strong></p>` : ""}
             </div>
 
             <!-- Estatísticas Principais -->
