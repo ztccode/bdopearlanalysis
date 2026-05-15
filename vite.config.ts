@@ -6,9 +6,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [
-    tanstackStart({
-      customViteReactPlugin: true,
-    }),
+    tanstackStart(),
     react(),
     tailwindcss(),
   ],
