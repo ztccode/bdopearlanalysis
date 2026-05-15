@@ -1,0 +1,8 @@
+# BDO Pearl Shop Analysis
+
+> Análise profissional de custo-benefício da Loja de Pérolas do Black Desert Online: ranking de ROI, plano ótimo e calculadora para players GS 775+.
+
+## Pages
+
+- [Início](/): Ranking de ROI, plano ótimo, calculadora e IA Advisor para a Loja de Pérolas.
+- [Personalizar](/personalize): Importe seu personagem do Garmoth para recomendações customizadas.
