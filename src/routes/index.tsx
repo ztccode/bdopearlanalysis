@@ -15,13 +15,38 @@ import { FAQAccordion } from "@/features/pearl-shop/components/FAQAccordion";
 import { PearlShopNews } from "@/features/pearl-shop/components/PearlShopNews";
 import { AIAdvisor } from "@/features/pearl-shop/components/AIAdvisor";
 
+const FAQ_ITEMS = [
+  { q: "O que são Cron Stones?", a: "Cron Stones são itens usados para proteger equipamentos durante refinamento. Cada Cron Stone garante que o equipamento não regride de nível em caso de falha." },
+  { q: "O que significa ROI?", a: "ROI (Return on Investment) mede quanto valor você obtém por cada pérola gasta. Quanto maior o ROI, melhor o custo-benefício da compra." },
+  { q: "Qual é a melhor compra para GS 775+?", a: "Para endgame, priorize Cron Stones e Conselho de Valks. O refinamento de equipamentos Soberanos é o maior gargalo, e esses itens reduzem significativamente o custo." },
+  { q: "Como os descontos são calculados?", a: "Os descontos são aplicados ao preço base do item. Um desconto de 60% significa que você paga 40% do preço original." },
+  { q: "Como funciona a personalização?", a: "Importe seu personagem do Garmoth usando seu link de screenshot. O sistema analisará seus stats e recomendará itens baseado em seu nível de progressão." },
+  { q: "Vocês mantêm histórico de promoções?", a: "Sim! Mantemos snapshots semanais de todas as promoções. Você pode comparar preços e ROI ao longo do tempo para identificar padrões." },
+];
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "BDO Pearl Shop Analysis — Início" },
       { name: "description", content: "Ranking de ROI, plano ótimo e calculadora para a Loja de Pérolas do BDO." },
-      { property: "og:title", content: "BDO Pearl Shop Analysis" },
+      { property: "og:title", content: "BDO Pearl Shop Analysis — Início" },
       { property: "og:description", content: "Estratégia endgame para a Loja de Pérolas do Black Desert Online." },
+      { property: "og:url", content: "https://bdopearlanalysis.lovable.app/" },
+    ],
+    links: [{ rel: "canonical", href: "https://bdopearlanalysis.lovable.app/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQ_ITEMS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
     ],
   }),
   component: HomePage,
